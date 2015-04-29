@@ -1,6 +1,6 @@
 (function($) {
-	/** The object which has store the status of the previous page of the elements */
-	var prevStatus = undefined;
+	/** The object which has store the status of the page */
+	var statusHandler = new Array();
 	
 	/** The table of all animations */
 	var animTable = new Array();
@@ -52,8 +52,9 @@
 	$.fn.runAnim = function(container, delay) {
 		var name = this.selector;
 
-		if($(container).children().length <= 0 && prevStatus !== undefined) {
-			$(container).append(prevStatus);
+		if($(container).children().length <= 0 && statusHandler[name] !== undefined) {
+			$(container).append(statusHandler[name]);
+			delete statusHandler[name];
 		}
 		
 		setTimeout(function() {
@@ -79,7 +80,7 @@
 				$(this).css(styleTable[name][index]);
 			});
 			// Store the status of previous page
-			prevStatus = $(this).clone();
+			statusHandler[name] = $(this).clone();
 			$(container).empty();
 		});
 	}
